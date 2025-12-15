@@ -5,184 +5,195 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aerocell</title>
     <style>
-        /* Reset de base */
+        /* --- 1. BASES --- */
         body, html {
             margin: 0;
             padding: 0;
-            font-family: 'Roboto', 'Gill Sans MT', 'Gill Sans', 'Trebuchet MS', sans-serif; /* Ta police */
+            font-family: 'Roboto', 'Gill Sans MT', 'Gill Sans', 'Trebuchet MS', sans-serif;
             background-color: #f0f0f0;
             scroll-behavior: smooth;
         }
 
-        /* CLASSE POUR BLOQUER LE SCROLL (Pendant la page de garde) */
-        body.stop-scrolling {
-            overflow: hidden;
-            height: 100vh;
-        }
+        body.stop-scrolling { overflow: hidden; height: 100vh; }
 
-        /* --- 1. PAGE DE GARDE (SPLASH SCREEN) --- */
+        /* --- 2. PAGE DE GARDE (SPLASH) --- */
         .splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            z-index: 10001;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #000; z-index: 10001;
+            display: flex; justify-content: center; align-items: center; flex-direction: column;
             transition: transform 0.8s ease-in-out;
         }
+        .splash-screen.slide-up { transform: translateY(-100%); }
+        .splash-logo { width: 200px; opacity: 0; transition: opacity 1.5s ease-in; }
+        .splash-logo.loaded { opacity: 1; }
 
-        .splash-screen.slide-up {
-            transform: translateY(-100%);
-        }
-
-        /* Logo dans la page de garde */
-        .splash-logo {
-            width: 200px;
-            opacity: 0;
-            transition: opacity 1.5s ease-in;
-        }
-        .splash-logo.loaded {
-            opacity: 1;
-        }
-
-        /* --- 2. HEADER FIXE --- */
+        /* --- 3. HEADER FIXE --- */
         .main-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 80px; /* Ajusté pour la taille de ton logo */
+            position: fixed; top: 0; left: 0; width: 100%;
+            height: 80px;
             background-color: #fff;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center; /* Centré pour le gros logo */
+            display: flex; align-items: center; justify-content: center;
             padding: 0 20px;
-        }
-
-        /* --- 3. BARRE DE PROGRESSION --- */
-        .progress-container {
-            position: fixed;
-            top: 80px; /* Ajusté sous le header */
-            left: 0;
-            width: 100%;
-            height: 10px; 
-            background-color: #00431f; /* TON VERT FONCÉ */
-            z-index: 9999; 
-        }
-
-        .progress-bar {
-            height: 10px; 
-            background-color: #b37d1b; /* TON DORÉ/BRUN */
-            width: 0%; 
-            transition: width 0.1s;
-        }
-
-        /* --- 4. INTRO (TEXTE) --- */
-        .intro {
-            padding-top: 120px; /* Espace sous le header et la barre */
-            min-height: 100vh;
-            background-color: #fff; /* TOND FOND BLANC */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            box-sizing: border-box;
-            padding-right: 5%;
-            padding-left: 5%;
-            padding-bottom: 50px;
-            text-align: justify;
-            line-height: 1.5;
-        }
-
-        /* Style des paragraphes avec le cadre demandé */
-        .intro p {
-            border: 6px solid #6fff7b; /* TA BORDURE VERT FLUO */
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            width: 100%;
-            max-width: 800px;
-        }
-
-        /* --- 5. SÉQUENCE --- */
-        .scroll-sequence-container {
-            height: 300vh; 
-            position: relative;
-        }
-
-        .sticky-wrapper {
-            position: sticky;
-            top: 90px; /* Sous le header */
-            height: calc(100vh - 90px);
-            background: #7ac38b; /* TON VERT CLAIR */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-        }
-
-        .image-row {
-            display: flex;
-            gap: 20px;
-            width: 90%;
-            max-width: 1200px;
-            justify-content: space-between;
-        }
-
-        .fade-image {
-            width: 100%; height: 300px; border-radius: 8px;
-            background-color: #444; 
-            display: flex; align-items: center; justify-content: center; text-align: center;
-            color: white; font-size: 1.5rem; border: 2px solid white;
-            padding: 10px;
-            opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out;
-        }
-
-        /* Images dans la séquence */
-        .fade-image img { 
-            width: 80%; /* Ajusté pour être joli dans la boite */
-            height: 80%; 
-            object-fit: contain; 
-            display: block; 
+            transition: height 0.3s;
         }
         
+        .header-logo-img {
+            height: 60px; width: auto;
+            transition: height 0.3s;
+        }
+
+        /* --- 4. BARRE DE PROGRESSION --- */
+        .progress-container {
+            position: fixed; top: 80px; left: 0; width: 100%; height: 10px;
+            background-color: #00431f; z-index: 9999;
+            transition: top 0.3s;
+        }
+        .progress-bar { height: 100%; background-color: #b37d1b; width: 0%; transition: width 0.1s; }
+
+        /* --- 5. INTRO & BOITE DE TEXTE (AJUSTÉ 80%) --- */
+        .intro {
+            padding-top: 120px; 
+            
+            /* CORRECTION : 80% de la hauteur. */
+            min-height: 80vh; 
+            
+            background-color: #f4f4f4; 
+            display: flex; justify-content: center; align-items: center; flex-direction: column;
+            
+            /* CORRECTION : Grosse marge en bas pour éviter que ça déborde */
+            padding-bottom: 100px; 
+            
+            padding-left: 20px; padding-right: 20px;
+        }
+
+        .text-box {
+            background-color: #ffffff;
+            border: 6px solid #6fff7b;
+            border-radius: 20px;
+            padding: 40px; 
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: justify;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .text-box p {
+            margin-bottom: 20px; 
+            border: none;
+            padding: 0;
+        }
+        .text-box p:last-child { margin-bottom: 0; }
+
+        /* --- 6. SÉQUENCE --- */
+        .scroll-sequence-container { height: 300vh; position: relative; }
+        
+        .sticky-wrapper {
+            position: sticky; top: 90px; height: calc(100vh - 90px);
+            background: #7ac38b;
+            display: flex; justify-content: center; align-items: center; overflow: hidden;
+        }
+        
+        .image-row {
+            display: flex; gap: 20px; width: 90%; max-width: 1200px; justify-content: space-between;
+        }
+        
+        .fade-image {
+            width: 100%; height: 300px; border-radius: 8px;
+            background-color: #444;
+            display: flex; align-items: center; justify-content: center; text-align: center;
+            color: white; font-size: 1.5rem; border: 2px solid white;
+            padding: 10px; opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out;
+        }
+        .fade-image img { width: 80%; height: 80%; object-fit: contain; display: block; }
         .fade-image.visible { opacity: 1; transform: translateY(0); }
 
-        /* --- 6. OUTRO --- */
-        .outro { height: 100vh; background-color: #fff; display: flex; justify-content: center; align-items: center; font-size: 2rem; }
+        /* --- 7. OUTRO --- */
+        .outro { 
+            min-height: 100vh;
+            background-color: #fff; 
+            display: flex; justify-content: center; align-items: center; 
+            font-size: 2rem; 
+        }
+
+        /* =========================================
+           📱 OPTIMISATION MOBILE
+           ========================================= */
+        @media screen and (max-width: 768px) {
+            
+            .main-header { height: 60px; padding: 0 10px; }
+            .header-logo-img { height: 40px; }
+            .progress-container { top: 60px; height: 6px; }
+
+            .intro { 
+                padding-top: 90px; 
+                min-height: auto; 
+                /* Marge confortable aussi sur mobile */
+                padding-bottom: 80px; 
+            }
+            
+            .text-box {
+                padding: 20px;
+                border-width: 4px;
+            }
+            .text-box p { font-size: 0.95rem; }
+
+            .sticky-wrapper { top: 66px; height: calc(100vh - 66px); }
+            
+            .image-row {
+                flex-direction: column;
+                gap: 20px; 
+                height: auto; 
+                width: 100%;
+                padding: 20px 0;
+                justify-content: flex-start;
+                overflow-y: auto; 
+            }
+
+            .fade-image {
+                width: 100%;
+                height: 200px; 
+                flex-shrink: 0;
+                font-size: 1.1rem;
+            }
+            
+            .splash-logo { width: 150px; }
+        }
     </style>
 </head>
-<body class="stop-scrolling"> <div id="splashScreen" class="splash-screen">
+<body class="stop-scrolling">
+    
+    <div id="splashScreen" class="splash-screen">
         <img id="logoSplash" src="Logo.svg" alt="Aerocell Splash" class="splash-logo">
-        <h1 style="color:white; margin-top: 20px;">Aerocell</h1>
-        <p style="position: absolute; bottom: 50px; color: white; animation: bounce 2s infinite;"></p>
+        <h1 style="color:white; margin-top: 20px; font-size: 2rem;">Aerocell</h1>
+        <p style="position: absolute; bottom: 80px; color: white; animation: bounce 2s infinite; font-size: 0.9rem;">SCROLLEZ POUR ENTRER 👇</p>
     </div>
 
     <header class="main-header">
-        <img src="Logo.svg" width="400" height="80" alt="Aerocell Logo"/>
+        <img src="Logo.svg" alt="Aerocell Logo" class="header-logo-img"/>
     </header>
 
-    <div class="progress-container">
-        <div class="progress-bar" id="myBar"></div>
-    </div>
+    <div class="progress-container"><div class="progress-bar" id="myBar"></div></div>
 
     <div class="intro">
-        <p><strong>[Insérer photo de nous ici]</strong></p>
-        
-        <p style="font-size: 1.5rem; border: none; text-align: center;">L'isolant qui protège votre maison... et la planète !</p>
-        
-        <p>Donec quis accumsan dui. Mauris id turpis magna. Phasellus finibus eros vel elit semper tincidunt. Phasellus pellentesque tortor sit amet facilisis aliquet. Donec luctus auctor est quis tincidunt. Morbi condimentum, mi accumsan imperdiet luctus, nisl arcu eleifend quam, ac suscipit lectus massa in tellus. Mauris dapibus, nisl vitae vehicula feugiat, lectus purus mattis erat, at pharetra justo tellus eu neque. Sed gravida luctus velit. Integer ac urna elit.</p> 
-        
-        <p>Proin eget augue nec lectus tempor volutpat sed sit amet odio. In hac habitasse platea dictumst. Etiam non metus a odio dapibus dapibus. Curabitur et suscipit quam, in tristique orci. Aliquam sollicitudin auctor fringilla. Suspendisse scelerisque, ligula ac mattis cursus, risus est rutrum mi, nec pulvinar mi lectus id odio. Fusce in ex vehicula, porttitor velit vitae, iaculis eros. Vivamus molestie porttitor leo eu viverra.</p>
-        
-        <p>Fusce faucibus sagittis ante. Praesent fringilla neque enim, eu mattis ligula faucibus at. Ut condimentum eros et ex tincidunt aliquam. Curabitur massa ligula, pellentesque ut mauris sed, vulputate imperdiet turpis. Mauris vitae pulvinar felis. Proin volutpat faucibus est, et luctus lacus iaculis eu.</p>
+        <div class="text-box">
+            <p style="text-align: center; font-weight: bold; font-size: 1.2rem; color: #00431f;">
+                [Insérer photo de nous ici]
+            </p>
+            
+            <p style="font-size: 1.3rem; text-align: center; color: #00431f; font-weight: bold;">
+                L'isolant qui protège votre maison... et la planète !
+            </p>
+            
+            <p>Donec quis accumsan dui. Mauris id turpis magna. Phasellus finibus eros vel elit semper tincidunt. Phasellus pellentesque tortor sit amet facilisis aliquet. Donec luctus auctor est quis tincidunt. Morbi condimentum, mi accumsan imperdiet luctus, nisl arcu eleifend quam, ac suscipit lectus massa in tellus. Mauris dapibus, nisl vitae vehicula feugiat, lectus purus mattis erat, at pharetra justo tellus eu neque. Sed gravida luctus velit.</p> 
+            
+            <p>Proin eget augue nec lectus tempor volutpat sed sit amet odio. In hac habitasse platea dictumst. Etiam non metus a odio dapibus dapibus. Curabitur et suscipit quam, in tristique orci. Aliquam sollicitudin auctor fringilla. Suspendisse scelerisque, ligula ac mattis cursus, risus est rutrum mi, nec pulvinar mi lectus id odio.</p>
+            
+            <p>Fusce faucibus sagittis ante. Praesent fringilla neque enim, eu mattis ligula faucibus at. Ut condimentum eros et ex tincidunt aliquam. Curabitur massa ligula, pellentesque ut mauris sed, vulputate imperdiet turpis.</p>
+        </div>
     </div>
 
     <div class="scroll-sequence-container">
@@ -202,45 +213,36 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // --- GESTION PAGE DE GARDE ---
+            // --- SPLASH SCREEN ---
             const splashScreen = document.getElementById('splashScreen');
             const logoSplash = document.getElementById('logoSplash');
             const body = document.body;
             let hasActivated = false;
 
-            // Apparition du logo intro
             setTimeout(() => { if(logoSplash) logoSplash.classList.add('loaded'); }, 100);
 
             function liftCurtain() {
                 if (!hasActivated) {
                     hasActivated = true;
                     splashScreen.classList.add('slide-up');
-                    
-                    // On débloque le scroll après l'animation (0.8s)
-                    setTimeout(() => {
-                        body.classList.remove('stop-scrolling');
-                    }, 800);
+                    setTimeout(() => { body.classList.remove('stop-scrolling'); }, 800);
                 }
             }
-
-            // Déclencheurs
             window.addEventListener('wheel', liftCurtain);
             window.addEventListener('touchmove', liftCurtain);
             window.addEventListener('keydown', liftCurtain);
 
-            // --- BARRE DE PROGRESSION & ANIMATION IMAGES ---
+            // --- SCROLL ANIMATIONS ---
             const progressBar = document.getElementById("myBar");
             const container = document.querySelector('.scroll-sequence-container');
             const images = document.querySelectorAll('.fade-image');
 
             function onScrollLogic() {
-                // Barre
                 const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
                 const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                 const scrolledPercent = (winScroll / height) * 100;
                 progressBar.style.width = scrolledPercent + "%";
 
-                // Images
                 if(container) {
                     const containerTop = container.getBoundingClientRect().top;
                     const scrollableHeight = container.offsetHeight - window.innerHeight;
@@ -264,10 +266,8 @@
                     });
                 }
             }
-
             window.addEventListener('scroll', onScrollLogic);
         });
     </script>
 </body>
 </html>
-
