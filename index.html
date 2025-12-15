@@ -84,7 +84,7 @@
         }
         .text-box p:last-child { margin-bottom: 0; }
 
-        /* --- 6. SÉQUENCE (BASE) --- */
+        /* --- 6. SÉQUENCE (BASE PC) --- */
         .scroll-sequence-container { height: 300vh; position: relative; z-index: 2; }
         
         .sticky-wrapper {
@@ -138,32 +138,34 @@
             /* --- SÉQUENCE MOBILE --- */
             .scroll-sequence-container { height: auto; min-height: auto; }
 
-            /* Désactivation du Sticky + CENTRAGE CONTENU */
+            /* Désactivation du Sticky + ALIGNEMENT GAUCHE */
             .sticky-wrapper {
                 position: relative; top: 0; height: auto; padding: 50px 0; 
-                /* CORRECTION ALIGNEMENT : On force le centrage flex ici */
                 display: flex;
                 flex-direction: column;
-                justify-content: center; 
-                align-items: center; 
+                justify-content: flex-start; /* Aligner en haut */
+                align-items: flex-start; /* Aligner à GAUCHE */
                 overflow: visible;
+                padding-left: 20px; /* Petite marge à gauche de l'écran */
             }
             
-            /* Images en colonne et centrées */
+            /* Images en colonne */
             .image-row {
                 display: flex; 
                 flex-direction: column; 
                 gap: 40px; 
-                width: 90%; 
-                margin: 0 auto; /* Centrage horizontal de la boite */
+                
+                /* MODIFICATION TAILLE ET POSITION */
+                width: 75%; /* Plus petit (était 90%) */
+                margin: 0; /* Pas de centrage, collé à la marge gauche définie au dessus */
+                
                 height: auto;
-                /* On s'assure que les éléments enfants sont centrés */
-                align-items: center; 
+                align-items: flex-start; 
             }
 
             .fade-image {
-                width: 100%; height: 250px;
-                /* Pas de !important ici, on laisse le JS gérer */
+                width: 100%; 
+                height: 200px; /* Un peu moins haut */
             }
             
             .splash-logo { width: 150px; }
@@ -279,7 +281,7 @@
                         const windowHeight = window.innerHeight;
 
                         // Si le haut de l'image est visible (dans les 85% de l'écran) 
-                        // ET que le bas de l'image n'est pas encore sorti par le haut (rect.bottom > 0)
+                        // ET que le bas de l'image n'est pas encore sorti par le haut
                         if(rect.top < windowHeight * 0.85 && rect.bottom > 0) {
                              img.classList.add('visible');
                         } else {
