@@ -84,7 +84,7 @@
         }
         .text-box p:last-child { margin-bottom: 0; }
 
-        /* --- 6. SÉQUENCE (ANIMATION PC) --- */
+        /* --- 6. SÉQUENCE (ANIMATION BASE) --- */
         .scroll-sequence-container { height: 300vh; position: relative; z-index: 2; }
         
         .sticky-wrapper {
@@ -102,9 +102,13 @@
             background-color: #444;
             display: flex; align-items: center; justify-content: center; text-align: center;
             color: white; font-size: 1.5rem; border: 2px solid white;
-            padding: 10px; opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out;
+            padding: 10px; 
+            /* L'état de base : caché et légèrement plus bas */
+            opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out;
         }
         .fade-image img { width: 80%; height: 80%; object-fit: contain; display: block; }
+        
+        /* L'état visible : pleine opacité et position normale */
         .fade-image.visible { opacity: 1; transform: translateY(0); }
 
         /* --- 7. OUTRO --- */
@@ -117,57 +121,42 @@
         }
 
         /* =========================================
-           📱 OPTIMISATION MOBILE (LA CORRECTION EST ICI)
+           📱 OPTIMISATION MOBILE
            ========================================= */
         @media screen and (max-width: 768px) {
             
-            /* Ajustements Header */
             .main-header { height: 60px; padding: 0 10px; }
             .header-logo-img { height: 40px; }
             .progress-container { top: 60px; height: 6px; }
 
-            /* Ajustements Intro */
             .intro { 
                 padding-top: 90px; 
                 min-height: auto; 
-                padding-bottom: 50px; /* Marge standard */
+                padding-bottom: 50px; 
             }
             .text-box { padding: 20px; border-width: 4px; }
             .text-box p { font-size: 0.95rem; }
 
-            /* --- CORRECTION SÉQUENCE MOBILE --- */
-            
-            /* 1. On désactive la hauteur forcée de 300vh */
-            .scroll-sequence-container {
-                height: auto; /* La boite fait la taille de son contenu */
-                min-height: auto;
-            }
+            /* --- SÉQUENCE MOBILE --- */
+            .scroll-sequence-container { height: auto; min-height: auto; }
 
-            /* 2. On désactive le Sticky (blocage) */
+            /* Désactivation du Sticky */
             .sticky-wrapper {
-                position: relative; /* Devient un bloc normal */
-                top: 0;
-                height: auto; /* S'agrandit selon les images */
-                padding: 50px 0; /* Espace en haut et en bas dans le vert */
-                align-items: center;
-                overflow: visible;
+                position: relative; top: 0; height: auto; padding: 50px 0; 
+                align-items: center; overflow: visible;
             }
             
-            /* 3. On empile les images verticalement */
+            /* Images en colonne et centrées */
             .image-row {
-                display: flex; 
-                flex-direction: column; /* Colonne verticale */
-                gap: 40px; /* Espace entre les images */
-                width: 90%;
+                display: flex; flex-direction: column; gap: 40px; 
+                width: 90%; 
+                margin: 0 auto; /* CORRECTION CENTRAGE : Ceci centre le bloc */
                 height: auto;
             }
 
-            /* 4. On force les images à être visibles (on annule l'animation scroll qui bugue si pas sticky) */
             .fade-image {
-                width: 100%; 
-                height: 250px;
-                opacity: 1 !important; /* Toujours visible */
-                transform: translateY(0) !important;
+                width: 100%; height: 250px;
+                /* ON A RETIRÉ LE !important ICI pour permettre l'animation JS */
             }
             
             .splash-logo { width: 150px; }
@@ -248,37 +237,54 @@
             const images = document.querySelectorAll('.fade-image');
 
             function onScrollLogic() {
+                // 1. Barre de progression (Commun PC et Mobile)
                 const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
                 const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                 const scrolledPercent = (winScroll / height) * 100;
                 progressBar.style.width = scrolledPercent + "%";
 
-                // Animation des images UNIQUEMENT si on est sur PC (plus de 768px)
-                // Sur mobile, le CSS force déjà l'affichage, donc ce JS ne gêne pas
-                if(container && window.innerWidth > 768) {
-                    const containerTop = container.getBoundingClientRect().top;
-                    const scrollableHeight = container.offsetHeight - window.innerHeight;
-                    const scrolledDist = -containerTop;
+                // 2. Animation des images (Logique différente PC vs Mobile)
+                if (window.innerWidth > 768) {
+                    // --- LOGIQUE PC (AVEC STICKY) ---
+                    if(container) {
+                        const containerTop = container.getBoundingClientRect().top;
+                        const scrollableHeight = container.offsetHeight - window.innerHeight;
+                        const scrolledDist = -containerTop;
 
-                    if (scrolledDist < 0) {
-                        images.forEach(img => img.classList.remove('visible'));
-                        return;
+                        if (scrolledDist < 0) {
+                            images.forEach(img => img.classList.remove('visible'));
+                            return;
+                        }
+                        let progress = scrolledDist / scrollableHeight;
+                        if (progress < 0) progress = 0;
+                        if (progress > 1) progress = 1;
+                        const totalImages = images.length;
+                        const indexToShow = Math.floor(progress * (totalImages + 0.5));
+                        images.forEach((img, index) => {
+                            if (index <= indexToShow) img.classList.add('visible');
+                            else img.classList.remove('visible');
+                        });
                     }
+                } else {
+                    // --- LOGIQUE MOBILE (SANS STICKY, JUSTE AU SCROLL) ---
+                    images.forEach(img => {
+                        // On regarde la position du haut de l'image par rapport à la fenêtre
+                        const rect = img.getBoundingClientRect();
+                        const imageTop = rect.top;
+                        const windowHeight = window.innerHeight;
 
-                    let progress = scrolledDist / scrollableHeight;
-                    if (progress < 0) progress = 0;
-                    if (progress > 1) progress = 1;
-
-                    const totalImages = images.length;
-                    const indexToShow = Math.floor(progress * (totalImages + 0.5));
-
-                    images.forEach((img, index) => {
-                        if (index <= indexToShow) img.classList.add('visible');
-                        else img.classList.remove('visible');
+                        // Si le haut de l'image entre dans les 85% inférieurs de l'écran, on l'affiche
+                        if(imageTop < windowHeight * 0.85) {
+                             img.classList.add('visible');
+                        }
+                        // Note: Sur mobile, on ne retire pas la classe 'visible' quand on remonte
+                        // c'est souvent plus agréable à l'utilisation.
                     });
                 }
             }
             window.addEventListener('scroll', onScrollLogic);
+            // On lance une fois au chargement pour vérifier si des images sont déjà visibles
+            onScrollLogic();
         });
     </script>
 </body>
