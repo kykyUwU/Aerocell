@@ -58,10 +58,10 @@
             min-height: 80vh; 
             background-color: #f4f4f4; 
             display: flex; justify-content: center; align-items: center; flex-direction: column;
-            padding-bottom: 100px; /* Marge PC */
+            padding-bottom: 100px; 
             padding-left: 20px; padding-right: 20px;
             position: relative; 
-            z-index: 1; /* S'assure que le texte est bien géré par rapport au fond */
+            z-index: 1; 
         }
 
         .text-box {
@@ -84,7 +84,7 @@
         }
         .text-box p:last-child { margin-bottom: 0; }
 
-        /* --- 6. SÉQUENCE --- */
+        /* --- 6. SÉQUENCE (ANIMATION PC) --- */
         .scroll-sequence-container { height: 300vh; position: relative; z-index: 2; }
         
         .sticky-wrapper {
@@ -117,42 +117,57 @@
         }
 
         /* =========================================
-           📱 OPTIMISATION MOBILE (CORRIGÉ)
+           📱 OPTIMISATION MOBILE (LA CORRECTION EST ICI)
            ========================================= */
         @media screen and (max-width: 768px) {
             
+            /* Ajustements Header */
             .main-header { height: 60px; padding: 0 10px; }
             .header-logo-img { height: 40px; }
             .progress-container { top: 60px; height: 6px; }
 
+            /* Ajustements Intro */
             .intro { 
                 padding-top: 90px; 
                 min-height: auto; 
-                /* CORRECTION 1 : Grosse marge en bas sur mobile pour ne pas que ça déborde */
-                padding-bottom: 150px; 
+                padding-bottom: 50px; /* Marge standard */
             }
-            
             .text-box { padding: 20px; border-width: 4px; }
             .text-box p { font-size: 0.95rem; }
 
-            .sticky-wrapper { top: 66px; height: calc(100vh - 66px); align-items: flex-start; padding-top: 20px; }
+            /* --- CORRECTION SÉQUENCE MOBILE --- */
             
-            /* CORRECTION 2 : MODE GRILLE 2x2 SUR MOBILE */
-            .image-row {
-                display: grid; /* On passe en mode grille */
-                grid-template-columns: 1fr 1fr; /* 2 colonnes égales */
-                gap: 15px; 
-                width: 95%;
-                height: auto;
-                /* On centre la grille verticalement si possible */
-                margin-top: auto; 
-                margin-bottom: auto;
+            /* 1. On désactive la hauteur forcée de 300vh */
+            .scroll-sequence-container {
+                height: auto; /* La boite fait la taille de son contenu */
+                min-height: auto;
             }
 
+            /* 2. On désactive le Sticky (blocage) */
+            .sticky-wrapper {
+                position: relative; /* Devient un bloc normal */
+                top: 0;
+                height: auto; /* S'agrandit selon les images */
+                padding: 50px 0; /* Espace en haut et en bas dans le vert */
+                align-items: center;
+                overflow: visible;
+            }
+            
+            /* 3. On empile les images verticalement */
+            .image-row {
+                display: flex; 
+                flex-direction: column; /* Colonne verticale */
+                gap: 40px; /* Espace entre les images */
+                width: 90%;
+                height: auto;
+            }
+
+            /* 4. On force les images à être visibles (on annule l'animation scroll qui bugue si pas sticky) */
             .fade-image {
-                width: 100%; /* Prend toute la largeur de sa case */
-                height: 160px; /* Hauteur fixe raisonnable pour tenir dans l'écran */
-                font-size: 1rem; /* Texte un peu plus petit */
+                width: 100%; 
+                height: 250px;
+                opacity: 1 !important; /* Toujours visible */
+                transform: translateY(0) !important;
             }
             
             .splash-logo { width: 150px; }
@@ -238,7 +253,9 @@
                 const scrolledPercent = (winScroll / height) * 100;
                 progressBar.style.width = scrolledPercent + "%";
 
-                if(container) {
+                // Animation des images UNIQUEMENT si on est sur PC (plus de 768px)
+                // Sur mobile, le CSS force déjà l'affichage, donc ce JS ne gêne pas
+                if(container && window.innerWidth > 768) {
                     const containerTop = container.getBoundingClientRect().top;
                     const scrollableHeight = container.offsetHeight - window.innerHeight;
                     const scrolledDist = -containerTop;
