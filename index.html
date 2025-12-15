@@ -84,7 +84,7 @@
         }
         .text-box p:last-child { margin-bottom: 0; }
 
-        /* --- 6. SÉQUENCE (ANIMATION BASE) --- */
+        /* --- 6. SÉQUENCE (BASE) --- */
         .scroll-sequence-container { height: 300vh; position: relative; z-index: 2; }
         
         .sticky-wrapper {
@@ -103,12 +103,10 @@
             display: flex; align-items: center; justify-content: center; text-align: center;
             color: white; font-size: 1.5rem; border: 2px solid white;
             padding: 10px; 
-            /* L'état de base : caché et légèrement plus bas */
             opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out;
         }
         .fade-image img { width: 80%; height: 80%; object-fit: contain; display: block; }
         
-        /* L'état visible : pleine opacité et position normale */
         .fade-image.visible { opacity: 1; transform: translateY(0); }
 
         /* --- 7. OUTRO --- */
@@ -140,23 +138,32 @@
             /* --- SÉQUENCE MOBILE --- */
             .scroll-sequence-container { height: auto; min-height: auto; }
 
-            /* Désactivation du Sticky */
+            /* Désactivation du Sticky + CENTRAGE CONTENU */
             .sticky-wrapper {
                 position: relative; top: 0; height: auto; padding: 50px 0; 
-                align-items: center; overflow: visible;
+                /* CORRECTION ALIGNEMENT : On force le centrage flex ici */
+                display: flex;
+                flex-direction: column;
+                justify-content: center; 
+                align-items: center; 
+                overflow: visible;
             }
             
             /* Images en colonne et centrées */
             .image-row {
-                display: flex; flex-direction: column; gap: 40px; 
+                display: flex; 
+                flex-direction: column; 
+                gap: 40px; 
                 width: 90%; 
-                margin: 0 auto; /* CORRECTION CENTRAGE : Ceci centre le bloc */
+                margin: 0 auto; /* Centrage horizontal de la boite */
                 height: auto;
+                /* On s'assure que les éléments enfants sont centrés */
+                align-items: center; 
             }
 
             .fade-image {
                 width: 100%; height: 250px;
-                /* ON A RETIRÉ LE !important ICI pour permettre l'animation JS */
+                /* Pas de !important ici, on laisse le JS gérer */
             }
             
             .splash-logo { width: 150px; }
@@ -237,15 +244,15 @@
             const images = document.querySelectorAll('.fade-image');
 
             function onScrollLogic() {
-                // 1. Barre de progression (Commun PC et Mobile)
+                // 1. Barre de progression (Commun)
                 const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
                 const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                 const scrolledPercent = (winScroll / height) * 100;
                 progressBar.style.width = scrolledPercent + "%";
 
-                // 2. Animation des images (Logique différente PC vs Mobile)
+                // 2. Animation Images
                 if (window.innerWidth > 768) {
-                    // --- LOGIQUE PC (AVEC STICKY) ---
+                    // --- PC LOGIC (STICKY) ---
                     if(container) {
                         const containerTop = container.getBoundingClientRect().top;
                         const scrollableHeight = container.offsetHeight - window.innerHeight;
@@ -266,24 +273,24 @@
                         });
                     }
                 } else {
-                    // --- LOGIQUE MOBILE (SANS STICKY, JUSTE AU SCROLL) ---
+                    // --- MOBILE LOGIC (REVERT ENABLED) ---
                     images.forEach(img => {
-                        // On regarde la position du haut de l'image par rapport à la fenêtre
                         const rect = img.getBoundingClientRect();
-                        const imageTop = rect.top;
                         const windowHeight = window.innerHeight;
 
-                        // Si le haut de l'image entre dans les 85% inférieurs de l'écran, on l'affiche
-                        if(imageTop < windowHeight * 0.85) {
+                        // Si le haut de l'image est visible (dans les 85% de l'écran) 
+                        // ET que le bas de l'image n'est pas encore sorti par le haut (rect.bottom > 0)
+                        if(rect.top < windowHeight * 0.85 && rect.bottom > 0) {
                              img.classList.add('visible');
+                        } else {
+                             // Si on remonte ou qu'on est trop loin, on enlève la classe
+                             img.classList.remove('visible');
                         }
-                        // Note: Sur mobile, on ne retire pas la classe 'visible' quand on remonte
-                        // c'est souvent plus agréable à l'utilisation.
                     });
                 }
             }
             window.addEventListener('scroll', onScrollLogic);
-            // On lance une fois au chargement pour vérifier si des images sont déjà visibles
+            // Check initial
             onScrollLogic();
         });
     </script>
