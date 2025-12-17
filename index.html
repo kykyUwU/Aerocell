@@ -9,10 +9,11 @@
         body, html {
             margin: 0;
             padding: 0;
-            font-family: 'Roboto', 'Gill Sans MT', 'Gill Sans', 'Trebuchet MS', sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Police propre et moderne */
+            background-color: #ffffff; /* FOND BLANC PUR */
             scroll-behavior: smooth;
-            /* CORRECTION : On retire overflow-x: hidden ici car cela casse le sticky sur PC */
+            color: #333;
+            line-height: 1.6;
         }
 
         body.stop-scrolling { overflow: hidden; height: 100vh; }
@@ -33,7 +34,7 @@
             position: fixed; top: 0; left: 0; width: 100%;
             height: 80px;
             background-color: #fff;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
             z-index: 10000;
             display: flex; align-items: center; justify-content: center;
             padding: 0 20px;
@@ -41,93 +42,96 @@
             transition: height 0.3s;
         }
         
-        .header-logo-img {
-            height: 60px; width: auto;
-            transition: height 0.3s;
-        }
+        .header-logo-img { height: 60px; width: auto; transition: height 0.3s; }
 
         /* --- 4. BARRE DE PROGRESSION --- */
         .progress-container {
-            position: fixed; top: 80px; left: 0; width: 100%; height: 10px;
-            background-color: #00431f; z-index: 9999;
-            transition: top 0.3s;
+            position: fixed; top: 80px; left: 0; width: 100%; height: 6px;
+            background-color: #e0e0e0; z-index: 9999;
         }
-        .progress-bar { height: 100%; background-color: #b37d1b; width: 0%; transition: width 0.1s; }
+        .progress-bar { height: 100%; background-color: #6fff7b; width: 0%; transition: width 0.1s; }
 
-        /* --- 5. INTRO & BOITE DE TEXTE --- */
-        .intro {
+        /* --- 5. STYLE COMMUN POUR LES TEXTES (INTRO & OUTRO) --- */
+        .text-section {
+            /* Permet aux sections de s'adapter à la taille du texte */
+            min-height: auto; 
             padding-top: 120px; 
-            min-height: 80vh; 
-            background-color: #f4f4f4; 
-            display: flex; justify-content: center; align-items: center; flex-direction: column;
-            padding-bottom: 100px; 
+            padding-bottom: 100px;
             padding-left: 20px; padding-right: 20px;
-            position: relative; 
-            z-index: 1; 
+            
+            display: flex; justify-content: center; align-items: center; flex-direction: column;
+            background-color: #ffffff; /* Fond blanc derrière la boite */
+            position: relative; z-index: 1;
         }
 
         .text-box {
-            background-color: #ffffff;
-            border: 6px solid #6fff7b;
-            border-radius: 20px;
+            /* COULEUR BLANC CASSÉ (Beige très clair) pour le contraste */
+            background-color: #fdfbf7; 
+            
+            border: 4px solid #6fff7b; /* Cadre Vert */
+            border-radius: 12px; /* Coins légèrement arrondis */
             padding: 40px; 
-            max-width: 800px;
+            max-width: 900px; /* Largeur max pour la lecture */
             width: 100%;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            text-align: justify;
-            line-height: 1.6;
-            color: #333;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); /* Ombre douce */
+            text-align: justify; /* Texte justifié comme demandé */
             box-sizing: border-box;
+        }
+
+        .text-box h2 {
+            text-align: center; color: #00431f; margin-top: 0; margin-bottom: 30px;
         }
 
         .text-box p {
             margin-bottom: 20px; 
-            border: none;
-            padding: 0;
+            font-size: 1.05rem;
         }
         .text-box p:last-child { margin-bottom: 0; }
 
-        /* --- 6. SÉQUENCE (BASE PC - STICKY DOIT MARCHER ICI) --- */
+        /* Citation de fin en gras/italique */
+        .punchline {
+            text-align: center; font-weight: bold; font-style: italic; 
+            color: #00431f; margin-top: 20px; font-size: 1.2rem;
+        }
+
+        /* --- 6. SÉQUENCE MILIEU (CORRECTION BORDURES) --- */
         .scroll-sequence-container { 
             height: 300vh; 
             position: relative; 
             z-index: 2; 
+            background-color: #7ac38b; /* On met le vert ici aussi par sécurité */
         }
         
         .sticky-wrapper {
-            position: sticky; /* LE STICKY REVIENT */
-            top: 90px; 
-            height: calc(100vh - 90px);
-            background: #7ac38b;
+            position: sticky; 
+            top: 86px; /* Juste sous le header + barre */
+            height: calc(100vh - 86px);
+            background-color: #7ac38b; /* FOND VERT REMPLI */
             display: flex; justify-content: center; align-items: center; overflow: hidden;
             width: 100%;
+            margin: 0; padding: 0;
         }
         
         .image-row {
-            display: flex; gap: 20px; width: 90%; max-width: 1200px; justify-content: space-between;
+            display: flex; gap: 30px; width: 90%; max-width: 1200px; justify-content: space-between;
         }
         
         .fade-image {
-            width: 100%; height: 300px; border-radius: 8px;
-            background-color: #444;
+            width: 100%; height: 350px; border-radius: 8px;
+            background-color: #fff; /* Fond blanc des images */
             display: flex; align-items: center; justify-content: center; text-align: center;
-            color: white; font-size: 1.5rem; border: 2px solid white;
+            color: #333; font-weight: bold; font-size: 1.2rem; 
+            border: 4px solid #fff;
             padding: 10px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            
             opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out;
             box-sizing: border-box;
         }
-        .fade-image img { width: 80%; height: 80%; object-fit: contain; display: block; }
+        .fade-image img { width: 90%; height: 90%; object-fit: contain; display: block; }
         
         .fade-image.visible { opacity: 1; transform: translateY(0); }
 
-        /* --- 7. OUTRO --- */
-        .outro { 
-            min-height: 100vh;
-            background-color: #fff; 
-            display: flex; justify-content: center; align-items: center; 
-            font-size: 2rem; 
-            position: relative; z-index: 3;
-        }
 
         /* =========================================
            📱 OPTIMISATION MOBILE
@@ -136,42 +140,34 @@
             
             .main-header { height: 60px; padding: 0 10px; }
             .header-logo-img { height: 40px; }
-            .progress-container { top: 60px; height: 6px; }
+            .progress-container { top: 60px; }
 
-            .intro { 
+            /* Ajustement Textes */
+            .text-section { 
                 padding-top: 90px; 
-                min-height: auto; 
-                padding-bottom: 50px; 
-                /* Sécurité pour éviter le débordement horizontal ici */
-                overflow-x: hidden; 
+                padding-bottom: 60px; 
             }
-            .text-box { padding: 20px; border-width: 4px; }
-            .text-box p { font-size: 0.95rem; }
+            .text-box { 
+                padding: 25px; 
+                border-width: 3px; 
+            }
+            .text-box p { font-size: 0.95rem; text-align: left; /* Souvent plus lisible sur mobile */ }
 
             /* --- SÉQUENCE MOBILE --- */
-            .scroll-sequence-container { height: auto; min-height: auto; overflow-x: hidden; }
+            .scroll-sequence-container { height: auto; background-color: #7ac38b; }
 
-            /* Désactivation du Sticky + CENTRAGE FORCÉ */
             .sticky-wrapper {
-                position: relative; top: 0; height: auto; padding: 50px 0; 
-                display: flex;
-                flex-direction: column;
-                justify-content: center; 
-                align-items: center; 
-                overflow: visible;
+                position: relative; top: 0; height: auto; padding: 60px 0; 
+                display: flex; flex-direction: column;
+                justify-content: center; align-items: center; 
                 width: 100%;
-                padding-left: 0; padding-right: 0;
             }
             
-            /* Images en colonne */
             .image-row {
-                display: flex; 
-                flex-direction: column; 
-                gap: 40px; 
-                width: 75%; 
+                display: flex; flex-direction: column; gap: 40px; 
+                width: 80%; /* Largeur confortable */
                 margin: 0 auto; 
-                height: auto;
-                align-items: center; 
+                height: auto; align-items: center; 
             }
 
             .fade-image {
@@ -187,7 +183,7 @@
     <div id="splashScreen" class="splash-screen">
         <img id="logoSplash" src="Logo.svg" alt="Aerocell Splash" class="splash-logo">
         <h1 style="color:white; margin-top: 20px; font-size: 2rem;">Aerocell</h1>
-        <p style="position: absolute; bottom: 80px; color: white; animation: bounce 2s infinite; font-size: 0.9rem;"></p>
+        <p style="position: absolute; bottom: 80px; color: white; animation: bounce 2s infinite; font-size: 0.9rem;">SCROLLEZ POUR ENTRER 👇</p>
     </div>
 
     <header class="main-header">
@@ -196,50 +192,45 @@
 
     <div class="progress-container"><div class="progress-bar" id="myBar"></div></div>
 
-    <div class="intro">
+    <div class="text-section intro">
         <div class="text-box">
-            <p style="text-align: center; font-weight: bold; font-size: 1.2rem; color: #00431f;">
-                [Insérer photo de nous ici]
-            </p>
+            <p>Le secteur du bâtiment est très énergivore. A lui seul, il représente en France plus de 40% de la consommation globale d’énergie. L’énergie consommée l’est dans l’éclairage, le fonctionnement des commodités, mais surtout dans le confort thermique ; le chauffage et la climatisation. Une part très importante de cette énergie est perdue à travers une enveloppe mal isolée, en Occitanie par exemple, environ 350 000 logements sont considérées comme « passoire thermique » (cassées F ou G au DPE). Nous souhaitons amputer ce point névralgique de la dépense énergétique globale impactant l’empreinte carbone française en proposant le Cryocell, un isolant thermique haute performance.</p>
             
-            <p style="font-size: 1.3rem; text-align: center; color: #00431f; font-weight: bold;">
-                L'isolant qui protège votre maison... et la planète !
-            </p>
+            <p>Notre isolant n’est pas que performant, il est aussi biosourcé car composé de cellulose. Nous obtenons cette cellulose grâce à la collecte des déchets verts de la commune de Toulouse et de ses environs, qui ne sont plus désormais de la biomasse stagnante, mais une ressource précieuse dans la transition écologique.</p>
             
-           <p>Le secteur du bâtiment est très énergivore. A lui seul, il représente en France plus de 40% de la consommation globale d’énergie. L’énergie consommée l’est dans l’éclairage, le fonctionnement des commodités, mais surtout dans le confort thermique ; le chauffage et la climatisation. Une part très importante de cette énergie est perdue à travers une enveloppe mal isolée, en Occitanie par exemple, environ 350 000 logements sont considérées comme « passoire thermique » (cassées F ou G au DPE). Nous souhaitons amputer ce point névralgique de la dépense énergétique globale impactant l’empreinte carbone française en proposant le Cryocell, un isolant thermique haute performance.
-           </p>
-            <p>Notre isolant n’est pas que performant, il est aussi biosourcé car composé de cellulose. Nous obtenons cette cellulose grâce à la collecte des déchets verts de la commune de Toulouse et de ses environs, qui ne sont plus désormais de la biomasse stagnante, mais une ressource précieuse dans la transition écologique.
-            </p>
-            <p>En choisissant notre solution, vous optez pour un isolant qui allie à la fois performance et écologie. Nous ne proposons pas qu’un isolant biosourcé offrant une excellente couverture thermique en toutes saisons, nous apportons une réponse qui s’ancre dans le refus d’être inactif face au changement climatique, en permettant aux déchets verts d’avoir une seconde vie gravée dans chaque foyer français. En soutenant notre initiative, vous ne soutenez pas qu’une entreprise engagée, vous devenez acteur dans la diminution de la dépense énergétique française et de ses émissions carbones.
-            </p>
+            <p>En choisissant notre solution, vous optez pour un isolant qui allie à la fois performance et écologie. Nous ne proposons pas qu’un isolant biosourcé offrant une excellente couverture thermique en toutes saisons, nous apportons une réponse qui s’ancre dans le refus d’être inactif face au changement climatique, en permettant aux déchets verts d’avoir une seconde vie gravée dans chaque foyer français. En soutenant notre initiative, vous ne soutenez pas qu’une entreprise engagée, vous devenez acteur dans la diminution de la dépense énergétique française et de ses émissions carbones.</p>
+        </div>
     </div>
 
     <div class="scroll-sequence-container">
         <div class="sticky-wrapper">
             <div class="image-row">
-                <div class="fade-image">Issus de déchets naturels</div>
-                <div class="fade-image">Traitement durable</div>
-                <div class="fade-image">Isolant efficace</div>
+                <div class="fade-image">Déchets naturels<br><span style="font-size:0.8rem; font-weight:normal;">Collecte locale</span></div>
+                <div class="fade-image">Traitement<br><span style="font-size:0.8rem; font-weight:normal;">Transformation durable</span></div>
+                <div class="fade-image">Isolation<br><span style="font-size:0.8rem; font-weight:normal;">Haute performance</span></div>
                 <div class="fade-image"><img src="Logo.svg" alt="Logo Fin"></div>
             </div>
         </div>
     </div>
 
-    <div class="outro">
-        <h1>
-            <p>La graine d’Aerocell a été plantée au pied des Pyrénées lors de vacances passées par les membres de notre future équipe dans une maison passoire thermique, en plein mois de novembre. Constat, il fallait mettre le chauffage à fond, ce qui est très énergivore, et porter au minimum trois paires de chaussettes, tout en s'abreuvant de chocolat chaud pour pouvoir survivre dans cet environnement hostile. 
-            </p>
-                <p>Les racines d’Aerocell ont commencé à se développer autour de plusieurs questionnements durant le séjour. Et si cette maison n’était pas un cas isolé, que des milliers de foyers devaient consommer autant d’énergie pour se chauffer ou se climatiser? Comment faire pour réduire cette consommation? Un isolant? Un isolant. Ce terrain de discussion est devenu le terreau fertile pour tenter coûte que coûte de répondre à cette problématique.
-                </p>
-                <p>Nous ne savions pas par où commencer. De quoi allait être fait l’isolant? Les racines commençaient à flétrir, et c'est à ce moment que notre futur directeur marketing, Clément, issu d’une famille de producteurs de tournesol, eut l'idée à l’origine de la solution que nous proposons. Une fois les graines de tournesol récoltées, le reste de la plante est soit brûlé, soit amené à la déchetterie. Pourquoi ne pas utiliser ces déchets pour notre isolant? Mais comment? 
-                </p>
-                    <p>C’est alors que le germe d’Aerocell sortit de terre. Nous nous sommes plongés dans des articles, des revues, des émissions… pour savoir comment faire notre isolant à partir de ces restes de  plantes, pour au final, avec toutes nos recherches, tomber sur une publicité ciblée voulant nous vendre un isolant thermique particulier, un aérogel de silice polymérisée.
-                    </p>
-            <p>Et là, “Eureka!”. Nous avions la solution entre les mains. La cellulose! Le polymère organique le plus abondant sur Terre, composant de 15 à 50 % les plantes. Aerocell venait enfin de développer ses premières feuilles pour croître et devenir acteur dans la lutte contre le changement climatique et la valorisation des déchets verts. 
-            </p>
-            <p>Aerocell est avant tout une initiative étudiante responsable, baignant dans l’esprit de la start-up nation, dans le refus de la passivité face aux enjeux climatiques d’aujourd’hui et de demain. Notre cryocell est le fruit de toutes ces longues réflexions, de semaines et de mois acharnés de développement du produit final, où chaque membre de l’équipe s’est donné et se donne toujours à 1000 % pour proposer une alternative saine pour l’environnement dans l’isolation.
-            </p>
-</h1>
+    <div class="text-section outro">
+        <div class="text-box">
+            <p>La graine d’Aerocell a été plantée au pied des Pyrénées lors de vacances passées par les membres de notre future équipe dans une maison passoire thermique, en plein mois de novembre. Constat, il fallait mettre le chauffage à fond, ce qui est très énergivore, et porter au minimum trois paires de chaussettes, tout en s'abreuvant de chocolat chaud pour pouvoir survivre dans cet environnement hostile.</p>
+            
+            <p>Les racines d’Aerocell ont commencé à se développer autour de plusieurs questionnements durant le séjour. Et si cette maison n’était pas un cas isolé, que des milliers de foyers devaient consommer autant d’énergie pour se chauffer ou se climatiser? Comment faire pour réduire cette consommation? Un isolant? Un isolant. Ce terrain de discussion est devenu le terreau fertile pour tenter coûte que coûte de répondre à cette problématique.</p>
+            
+            <p>Nous ne savions pas par où commencer. De quoi allait être fait l’isolant? Les racines commençaient à flétrir, et c'est à ce moment que notre futur directeur marketing, Clément, issu d’une famille de producteurs de tournesol, eut l'idée à l’origine de la solution que nous proposons. Une fois les graines de tournesol récoltées, le reste de la plante est soit brûlé, soit amené à la déchetterie. Pourquoi ne pas utiliser ces déchets pour notre isolant? Mais comment?</p>
+            
+            <p>C’est alors que le germe d’Aerocell sortit de terre. Nous nous sommes plongés dans des articles, des revues, des émissions… pour savoir comment faire notre isolant à partir de ces restes de plantes, pour au final, avec toutes nos recherches, tomber sur une publicité ciblée voulant nous vendre un isolant thermique particulier, un aérogel de silice polymérisée.</p>
+            
+            <p>Et là, “Eureka!”. Nous avions la solution entre les mains. La cellulose! Le polymère organique le plus abondant sur Terre, composant de 15 à 50 % les plantes. Aerocell venait enfin de développer ses premières feuilles pour croître et devenir acteur dans la lutte contre le changement climatique et la valorisation des déchets verts.</p>
+            
+            <p>Aerocell est avant tout une initiative étudiante responsable, baignant dans l’esprit de la start-up nation, dans le refus de la passivité face aux enjeux climatiques d’aujourd’hui et de demain. Notre cryocell est le fruit de toutes ces longues réflexions, de semaines et de mois acharnés de développement du produit final, où chaque membre de l’équipe s’est donné et se donne toujours à 1000 % pour proposer une alternative saine pour l’environnement dans l’isolation.</p>
+            
+            <div class="punchline">
+                "Quand la vie te donne des tournesols, fais-en une tournesolade pour créer l’isolant biosourcé de demain."
+            </div>
+        </div>
     </div>
 
     <script>
@@ -318,4 +309,3 @@
     </script>
 </body>
 </html>
-
