@@ -12,7 +12,7 @@
             font-family: 'Roboto', 'Gill Sans MT', 'Gill Sans', 'Trebuchet MS', sans-serif;
             background-color: #f0f0f0;
             scroll-behavior: smooth;
-            overflow-x: hidden; /* Empêche le scroll horizontal accidentel */
+            /* CORRECTION : On retire overflow-x: hidden ici car cela casse le sticky sur PC */
         }
 
         body.stop-scrolling { overflow: hidden; height: 100vh; }
@@ -37,7 +37,7 @@
             z-index: 10000;
             display: flex; align-items: center; justify-content: center;
             padding: 0 20px;
-            box-sizing: border-box; /* Important pour les paddings */
+            box-sizing: border-box; 
             transition: height 0.3s;
         }
         
@@ -87,14 +87,20 @@
         }
         .text-box p:last-child { margin-bottom: 0; }
 
-        /* --- 6. SÉQUENCE (BASE PC) --- */
-        .scroll-sequence-container { height: 300vh; position: relative; z-index: 2; }
+        /* --- 6. SÉQUENCE (BASE PC - STICKY DOIT MARCHER ICI) --- */
+        .scroll-sequence-container { 
+            height: 300vh; 
+            position: relative; 
+            z-index: 2; 
+        }
         
         .sticky-wrapper {
-            position: sticky; top: 90px; height: calc(100vh - 90px);
+            position: sticky; /* LE STICKY REVIENT */
+            top: 90px; 
+            height: calc(100vh - 90px);
             background: #7ac38b;
             display: flex; justify-content: center; align-items: center; overflow: hidden;
-            width: 100%; /* S'assure de prendre tout l'écran */
+            width: 100%;
         }
         
         .image-row {
@@ -136,23 +142,25 @@
                 padding-top: 90px; 
                 min-height: auto; 
                 padding-bottom: 50px; 
+                /* Sécurité pour éviter le débordement horizontal ici */
+                overflow-x: hidden; 
             }
             .text-box { padding: 20px; border-width: 4px; }
             .text-box p { font-size: 0.95rem; }
 
             /* --- SÉQUENCE MOBILE --- */
-            .scroll-sequence-container { height: auto; min-height: auto; }
+            .scroll-sequence-container { height: auto; min-height: auto; overflow-x: hidden; }
 
-            /* Désactivation du Sticky + CENTRAGE FORCÉ (FLEXBOX) */
+            /* Désactivation du Sticky + CENTRAGE FORCÉ */
             .sticky-wrapper {
                 position: relative; top: 0; height: auto; padding: 50px 0; 
                 display: flex;
                 flex-direction: column;
                 justify-content: center; 
-                align-items: center; /* C'est la clé du centrage horizontal */
+                align-items: center; 
                 overflow: visible;
-                width: 100%; /* Prend toute la largeur */
-                padding-left: 0; padding-right: 0; /* Pas de padding parasite sur les côtés */
+                width: 100%;
+                padding-left: 0; padding-right: 0;
             }
             
             /* Images en colonne */
@@ -160,14 +168,8 @@
                 display: flex; 
                 flex-direction: column; 
                 gap: 40px; 
-                
-                /* Largeur fixe de 75% */
                 width: 75%; 
-                
-                /* Double sécurité pour le centrage */
-                margin-left: auto;
-                margin-right: auto;
-                
+                margin: 0 auto; 
                 height: auto;
                 align-items: center; 
             }
@@ -254,7 +256,7 @@
             const images = document.querySelectorAll('.fade-image');
 
             function onScrollLogic() {
-                // 1. Barre de progression (Commun)
+                // 1. Barre de progression
                 const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
                 const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
                 const scrolledPercent = (winScroll / height) * 100;
@@ -288,12 +290,9 @@
                         const rect = img.getBoundingClientRect();
                         const windowHeight = window.innerHeight;
 
-                        // Si le haut de l'image est visible (dans les 85% de l'écran) 
-                        // ET que le bas de l'image n'est pas encore sorti par le haut
                         if(rect.top < windowHeight * 0.85 && rect.bottom > 0) {
                              img.classList.add('visible');
                         } else {
-                             // Si on remonte ou qu'on est trop loin, on enlève la classe
                              img.classList.remove('visible');
                         }
                     });
