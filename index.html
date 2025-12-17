@@ -9,13 +9,15 @@
         body, html {
             margin: 0;
             padding: 0;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Police propre et moderne */
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             background-color: #ffffff; /* FOND BLANC PUR */
             scroll-behavior: smooth;
             color: #333;
             line-height: 1.6;
+            /* On laisse le scroll visible par défaut, sauf si la classe stop-scrolling est là */
         }
 
+        /* C'est cette classe qui BLOQUE le scroll au début */
         body.stop-scrolling { overflow: hidden; height: 100vh; }
 
         /* --- 2. PAGE DE GARDE (SPLASH) --- */
@@ -53,33 +55,40 @@
 
         /* --- 5. STYLE COMMUN POUR LES TEXTES (INTRO & OUTRO) --- */
         .text-section {
-            /* Permet aux sections de s'adapter à la taille du texte */
             min-height: auto; 
             padding-top: 120px; 
             padding-bottom: 100px;
             padding-left: 20px; padding-right: 20px;
-            
             display: flex; justify-content: center; align-items: center; flex-direction: column;
-            background-color: #ffffff; /* Fond blanc derrière la boite */
+            background-color: #ffffff; 
             position: relative; z-index: 1;
         }
 
         .text-box {
-            /* COULEUR BLANC CASSÉ (Beige très clair) pour le contraste */
+            /* COULEUR BLANC CASSÉ pour le fond */
             background-color: #fdfbf7; 
             
-            border: 4px solid #6fff7b; /* Cadre Vert */
-            border-radius: 12px; /* Coins légèrement arrondis */
+            /* MODIFICATION ICI : Bordure blanc cassé (comme le fond) au lieu de vert */
+            border: 4px solid #fdfbf7; 
+            
+            border-radius: 12px; 
             padding: 40px; 
-            max-width: 900px; /* Largeur max pour la lecture */
+            max-width: 900px; 
             width: 100%;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05); /* Ombre douce */
-            text-align: justify; /* Texte justifié comme demandé */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); /* Ombre un peu plus marquée pour détacher du fond blanc */
+            text-align: justify; 
             box-sizing: border-box;
         }
 
+        /* Style du titre "Qui sommes nous" */
         .text-box h2 {
-            text-align: center; color: #00431f; margin-top: 0; margin-bottom: 30px;
+            text-align: center; 
+            color: #00431f; /* Vert foncé */
+            margin-top: 0; 
+            margin-bottom: 30px;
+            font-size: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .text-box p {
@@ -88,25 +97,23 @@
         }
         .text-box p:last-child { margin-bottom: 0; }
 
-        /* Citation de fin en gras/italique */
         .punchline {
             text-align: center; font-weight: bold; font-style: italic; 
             color: #00431f; margin-top: 20px; font-size: 1.2rem;
         }
 
-        /* --- 6. SÉQUENCE MILIEU (CORRECTION BORDURES) --- */
+        /* --- 6. SÉQUENCE MILIEU --- */
         .scroll-sequence-container { 
             height: 300vh; 
             position: relative; 
             z-index: 2; 
-            background-color: #7ac38b; /* On met le vert ici aussi par sécurité */
         }
         
         .sticky-wrapper {
             position: sticky; 
-            top: 86px; /* Juste sous le header + barre */
+            top: 86px; 
             height: calc(100vh - 86px);
-            background-color: #7ac38b; /* FOND VERT REMPLI */
+            background-color: #7ac38b; 
             display: flex; justify-content: center; align-items: center; overflow: hidden;
             width: 100%;
             margin: 0; padding: 0;
@@ -118,13 +125,12 @@
         
         .fade-image {
             width: 100%; height: 350px; border-radius: 8px;
-            background-color: #fff; /* Fond blanc des images */
+            background-color: #fff; 
             display: flex; align-items: center; justify-content: center; text-align: center;
             color: #333; font-weight: bold; font-size: 1.2rem; 
             border: 4px solid #fff;
             padding: 10px; 
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            
             opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out;
             box-sizing: border-box;
         }
@@ -142,7 +148,6 @@
             .header-logo-img { height: 40px; }
             .progress-container { top: 60px; }
 
-            /* Ajustement Textes */
             .text-section { 
                 padding-top: 90px; 
                 padding-bottom: 60px; 
@@ -151,7 +156,8 @@
                 padding: 25px; 
                 border-width: 3px; 
             }
-            .text-box p { font-size: 0.95rem; text-align: left; /* Souvent plus lisible sur mobile */ }
+            .text-box p { font-size: 0.95rem; text-align: left; }
+            .text-box h2 { font-size: 1.5rem; }
 
             /* --- SÉQUENCE MOBILE --- */
             .scroll-sequence-container { height: auto; background-color: #7ac38b; }
@@ -165,7 +171,7 @@
             
             .image-row {
                 display: flex; flex-direction: column; gap: 40px; 
-                width: 80%; /* Largeur confortable */
+                width: 80%; 
                 margin: 0 auto; 
                 height: auto; align-items: center; 
             }
@@ -215,6 +221,8 @@
 
     <div class="text-section outro">
         <div class="text-box">
+            <h2>Qui sommes-nous ?</h2>
+
             <p>La graine d’Aerocell a été plantée au pied des Pyrénées lors de vacances passées par les membres de notre future équipe dans une maison passoire thermique, en plein mois de novembre. Constat, il fallait mettre le chauffage à fond, ce qui est très énergivore, et porter au minimum trois paires de chaussettes, tout en s'abreuvant de chocolat chaud pour pouvoir survivre dans cet environnement hostile.</p>
             
             <p>Les racines d’Aerocell ont commencé à se développer autour de plusieurs questionnements durant le séjour. Et si cette maison n’était pas un cas isolé, que des milliers de foyers devaient consommer autant d’énergie pour se chauffer ou se climatiser? Comment faire pour réduire cette consommation? Un isolant? Un isolant. Ce terrain de discussion est devenu le terreau fertile pour tenter coûte que coûte de répondre à cette problématique.</p>
@@ -247,7 +255,10 @@
                 if (!hasActivated) {
                     hasActivated = true;
                     splashScreen.classList.add('slide-up');
-                    setTimeout(() => { body.classList.remove('stop-scrolling'); }, 800);
+                    setTimeout(() => { 
+                        // On débloque le scroll seulement quand le rideau se lève
+                        body.classList.remove('stop-scrolling'); 
+                    }, 800);
                 }
             }
             window.addEventListener('wheel', liftCurtain);
