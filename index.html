@@ -138,15 +138,15 @@
             /* --- SÉQUENCE MOBILE --- */
             .scroll-sequence-container { height: auto; min-height: auto; }
 
-            /* Désactivation du Sticky + ALIGNEMENT GAUCHE */
+            /* Désactivation du Sticky + CENTRAGE FORCÉ */
             .sticky-wrapper {
                 position: relative; top: 0; height: auto; padding: 50px 0; 
                 display: flex;
                 flex-direction: column;
-                justify-content: flex-start; /* Aligner en haut */
-                align-items: flex-start; /* Aligner à GAUCHE */
+                justify-content: center; 
+                align-items: center; /* ALIGN-ITEMS CENTER = CENTRAGE HORIZONTAL */
                 overflow: visible;
-                padding-left: 20px; /* Petite marge à gauche de l'écran */
+                padding-left: 0; 
             }
             
             /* Images en colonne */
@@ -155,17 +155,16 @@
                 flex-direction: column; 
                 gap: 40px; 
                 
-                /* MODIFICATION TAILLE ET POSITION */
-                width: 75%; /* Plus petit (était 90%) */
-                margin: 0; /* Pas de centrage, collé à la marge gauche définie au dessus */
+                /* TAILLE 75% + CENTRAGE AUTO */
+                width: 75%; 
+                margin: 0 auto; /* MARGIN AUTO = CENTRAGE DU BLOC */
                 
                 height: auto;
-                align-items: flex-start; 
+                align-items: center; 
             }
 
             .fade-image {
-                width: 100%; 
-                height: 200px; /* Un peu moins haut */
+                width: 100%; height: 200px;
             }
             
             .splash-logo { width: 150px; }
