@@ -12,6 +12,7 @@
             font-family: 'Roboto', 'Gill Sans MT', 'Gill Sans', 'Trebuchet MS', sans-serif;
             background-color: #f0f0f0;
             scroll-behavior: smooth;
+            overflow-x: hidden; /* Empêche le scroll horizontal accidentel */
         }
 
         body.stop-scrolling { overflow: hidden; height: 100vh; }
@@ -36,6 +37,7 @@
             z-index: 10000;
             display: flex; align-items: center; justify-content: center;
             padding: 0 20px;
+            box-sizing: border-box; /* Important pour les paddings */
             transition: height 0.3s;
         }
         
@@ -75,6 +77,7 @@
             text-align: justify;
             line-height: 1.6;
             color: #333;
+            box-sizing: border-box;
         }
 
         .text-box p {
@@ -91,6 +94,7 @@
             position: sticky; top: 90px; height: calc(100vh - 90px);
             background: #7ac38b;
             display: flex; justify-content: center; align-items: center; overflow: hidden;
+            width: 100%; /* S'assure de prendre tout l'écran */
         }
         
         .image-row {
@@ -104,6 +108,7 @@
             color: white; font-size: 1.5rem; border: 2px solid white;
             padding: 10px; 
             opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out;
+            box-sizing: border-box;
         }
         .fade-image img { width: 80%; height: 80%; object-fit: contain; display: block; }
         
@@ -138,15 +143,16 @@
             /* --- SÉQUENCE MOBILE --- */
             .scroll-sequence-container { height: auto; min-height: auto; }
 
-            /* Désactivation du Sticky + CENTRAGE FORCÉ */
+            /* Désactivation du Sticky + CENTRAGE FORCÉ (FLEXBOX) */
             .sticky-wrapper {
                 position: relative; top: 0; height: auto; padding: 50px 0; 
                 display: flex;
                 flex-direction: column;
                 justify-content: center; 
-                align-items: center; /* ALIGN-ITEMS CENTER = CENTRAGE HORIZONTAL */
+                align-items: center; /* C'est la clé du centrage horizontal */
                 overflow: visible;
-                padding-left: 0; 
+                width: 100%; /* Prend toute la largeur */
+                padding-left: 0; padding-right: 0; /* Pas de padding parasite sur les côtés */
             }
             
             /* Images en colonne */
@@ -155,9 +161,12 @@
                 flex-direction: column; 
                 gap: 40px; 
                 
-                /* TAILLE 75% + CENTRAGE AUTO */
+                /* Largeur fixe de 75% */
                 width: 75%; 
-                margin: 0 auto; /* MARGIN AUTO = CENTRAGE DU BLOC */
+                
+                /* Double sécurité pour le centrage */
+                margin-left: auto;
+                margin-right: auto;
                 
                 height: auto;
                 align-items: center; 
