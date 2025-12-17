@@ -40,16 +40,15 @@
             display: flex; align-items: center; justify-content: center;
             padding: 0 20px;
             box-sizing: border-box; 
-            /* On autorise le logo à dépasser visuellement */
             overflow: visible; 
         }
         
-        /* --- MODIFICATION DU LOGO ICI (CORRECTION TAILLE) --- */
+        /* LOGO HEADER */
         .header-logo-img { 
-            height: 90px; /* Réduit de 130px à 90px : plus équilibré */
+            height: 90px; 
             width: auto; 
             position: absolute;
-            top: -5px; /* Centré verticalement sur le header de 80px */
+            top: -5px; 
             transition: height 0.3s, top 0.3s;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); 
         }
@@ -63,13 +62,18 @@
 
         /* --- 5. STYLE COMMUN POUR LES TEXTES (INTRO & OUTRO) --- */
         .text-section {
-            min-height: auto; 
-            padding-top: 120px; /* Ajusté car le logo dépasse moins */
-            padding-bottom: 100px;
+            /* MODIFICATION ICI : Hauteur minimum de 100% de l'écran */
+            min-height: 100vh; 
+            
+            /* On augmente le padding pour aérer */
+            padding-top: 150px; 
+            padding-bottom: 200px; /* Espace de sécurité en bas */
+            
             padding-left: 20px; padding-right: 20px;
             display: flex; justify-content: center; align-items: center; flex-direction: column;
             background-color: #ffffff; 
             position: relative; z-index: 1;
+            box-sizing: border-box;
         }
 
         .text-box {
@@ -211,15 +215,14 @@
             
             /* Header Mobile */
             .main-header { height: 60px; padding: 0 10px; }
-            
-            /* Ajustement du logo mobile proportionnel */
             .header-logo-img { height: 70px; top: -5px; } 
-            
             .progress-container { top: 60px; }
 
             .text-section { 
-                padding-top: 100px; /* Ajusté */
-                padding-bottom: 60px; 
+                /* Moins de hauteur forcée sur mobile pour éviter les gros vides */
+                min-height: auto; 
+                padding-top: 130px; 
+                padding-bottom: 100px; 
             }
             .text-box { 
                 padding: 25px; 
